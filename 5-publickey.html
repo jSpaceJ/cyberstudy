@@ -18,28 +18,56 @@
       <li><a href="7-attacks.html">Attacks</a></li>
     </ul>
   </nav>
+
   <div class="container">
     <h1>Public Key Cryptography</h1>
 
     <h2>RSA Algorithm</h2>
     <ol>
-      <li>Pick primes p and q.</li>
-      <li>Compute n = p·q and φ(n)=(p−1)(q−1).</li>
-      <li>Pick e such that gcd(e,φ(n))=1.</li>
-      <li>Find d: e·d ≡ 1 mod φ(n).</li>
-      <li>Encrypt: c = m^e mod n.</li>
-      <li>Decrypt: m = c^d mod n.</li>
+      <li>Choose primes p and q.</li>
+      <li>Compute n = p×q and ϕ(n) = (p−1)(q−1).</li>
+      <li>Choose e (public exponent) such that gcd(e,ϕ(n))=1.</li>
+      <li>Compute d, the modular inverse of e mod ϕ(n).</li>
+      <li>Public key = (e, n), Private key = (d, n).</li>
     </ol>
 
-    <h2>Security</h2>
-    <p>Based on hardness of factoring n.</p>
+    <p><b>Encryption:</b> c = m^e mod n<br>
+       <b>Decryption:</b> m = c^d mod n</p>
 
-    <h2>Other Concepts</h2>
-    <ul>
-      <li><b>Discrete Logarithm:</b> Basis of Diffie-Hellman & ElGamal.</li>
-      <li><b>Trapdoor Functions:</b> Easy one way, hard to invert without secret (like factoring).</li>
-    </ul>
+    <h2>Worked Example</h2>
+    <p>p=5, q=11 → n=55, ϕ(n)=40.<br>
+       Choose e=3 → d=27 (since 3×27 ≡ 1 mod 40).<br>
+       Encrypt m=7: c=7^3 mod 55 = 343 mod 55 = 13.<br>
+       Decrypt: 13^27 mod 55 = 7 (original message).</p>
+
+    <h2>Why RSA is Secure</h2>
+    <p>Because factoring large n = p×q is infeasible for big primes (hundreds of digits).</p>
+
+    <h2>Bad Design Example: SalCrypt</h2>
+    <p>SalCrypt encryption: c = m^e mod n, decryption requires computing the modular inverse of e mod (n−1).  
+    <b>Problem:</b> modular inverses can be computed efficiently with the Extended Euclidean Algorithm.  
+    This means SalCrypt is insecure — decryption can be broken quickly.</p>
+
+    <h2>Practice Questions</h2>
+    <ol>
+      <li>
+        What’s the main problem RSA security relies on?
+        <button class="toggle-answer">Show Answer</button>
+        <div class="answer" style="display:none;">Integer factorisation (hard to factor n).</div>
+      </li>
+      <li>
+        In RSA, what are the public and private keys?
+        <button class="toggle-answer">Show Answer</button>
+        <div class="answer" style="display:none;">Public = (e,n). Private = (d,n).</div>
+      </li>
+      <li>
+        Why does SalCrypt fail as an encryption scheme?
+        <button class="toggle-answer">Show Answer</button>
+        <div class="answer" style="display:none;">Because modular inverses can be computed efficiently, making decryption trivial.</div>
+      </li>
+    </ol>
   </div>
+
   <script src="script.js"></script>
 </body>
 </html>
